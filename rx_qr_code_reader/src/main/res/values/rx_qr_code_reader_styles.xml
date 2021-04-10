@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="rx_qr_code_reader_FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/rx_qr_code_reader_icon_light</item>
+        <item name="fabSize">normal</item>
+    </style>
+
+    <style name="rx_qr_code_reader_check" parent="rx_qr_code_reader_FloatingActionButton">
+        <item name="backgroundTint">@color/rx_qr_code_reader_success</item>
+        <item name="srcCompat">@drawable/rx_qr_code_reader_check</item>
+    </style>
+
+    <style name="rx_qr_code_reader_clear" parent="rx_qr_code_reader_FloatingActionButton">
+        <item name="backgroundTint">@color/rx_qr_code_reader_error</item>
+        <item name="srcCompat">@drawable/rx_qr_code_reader_clear</item>
+    </style>
+
+    <style name="rx_qr_code_reader_replay" parent="rx_qr_code_reader_FloatingActionButton">
+        <item name="backgroundTint">@color/rx_qr_code_reader_base</item>
+        <item name="srcCompat">@drawable/rx_qr_code_reader_replay</item>
+    </style>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="rx_qr_code_reader_app_name">RxQrCodeReader</string>
+
+    <string name="rx_qr_code_reader_wrong_type">Błędny typ qrcodu</string>
+
+    <string name="rx_qr_code_reader_title_read">Skanowanie</string>
+    <string name="rx_qr_code_reader_title_view">Podgląd</string>
+</resources>
