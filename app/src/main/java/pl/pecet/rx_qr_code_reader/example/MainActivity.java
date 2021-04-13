@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     .subscribe();
         });
 
-
         readView = findViewById(R.id.button_read_url);
         readView.setOnClickListener(v -> {
             rxQrCode

@@ -44,7 +44,7 @@ public class QrCodeConfig {
 
     public void unlockOrientation() {
         if (lockOrientation) {
-            OrientationUtils.lockOrientation(activity);
+            OrientationUtils.unlockOrientation(activity);
         }
     }
 

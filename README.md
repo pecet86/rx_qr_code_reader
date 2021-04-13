@@ -17,7 +17,7 @@ repositories {
 }
 dependencies {
   def version = '<version>'
-  implementation "pl.pecet.rx_qr_code_reader:rx_qr_code_reader:$version"
+  implementation "com.github.pecet86:rx_qr_code_reader:$version"
 }
 ```
 
@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 Copyright 2021 Paweł Cal (pecet86)
-
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 GNU GENERAL PUBLIC LICENSE  
 Version 3, 29 June 2007
