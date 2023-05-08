@@ -1,13 +1,13 @@
 package pl.pecet.rx_qr_code_reader.internal.data;
 
-import com.google.mlkit.vision.barcode.Barcode;
+import static com.google.mlkit.vision.barcode.common.Barcode.Email;
 
 import lombok.Getter;
 
 public enum EmailType {
-    UNKNOWN(Barcode.Email.TYPE_UNKNOWN),
-    HOME(Barcode.Email.TYPE_HOME),
-    WORK(Barcode.Email.TYPE_WORK);
+    UNKNOWN(Email.TYPE_UNKNOWN),
+    HOME(Email.TYPE_HOME),
+    WORK(Email.TYPE_WORK);
 
     @Getter
     private final int type;
@@ -17,7 +17,7 @@ public enum EmailType {
     }
 
     public static EmailType fromType(int value) {
-        for (EmailType type : EmailType.values()) {
+        for (var type : EmailType.values()) {
             if (type.type == value) {
                 return type;
             }

@@ -1,10 +1,11 @@
 package pl.pecet.rx_qr_code_reader.internal.support;
 
+import static com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.media.Image;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -12,22 +13,21 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicYuvToRGB;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.experimental.UseExperimental;
 import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
 import com.google.android.gms.tasks.Task;
-import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-@UseExperimental(markerClass = ExperimentalGetImage.class)
+@ExperimentalGetImage
 public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
 
     private final Context context;
@@ -41,50 +41,54 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
     private static BarcodeScannerOptions getOptions() {
         return new BarcodeScannerOptions
                 .Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .setBarcodeFormats(FORMAT_QR_CODE)
                 .build();
     }
 
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
-        Image image = imageProxy.getImage();
+        var image = imageProxy.getImage();
         if (image != null) {
             new Analyzer(imageProxy, image).analyze();
         }
     }
 
     private static ByteBuffer imageToByteBuffer(final Image image) {
-        final Rect crop = image.getCropRect();
-        final int width = crop.width();
-        final int height = crop.height();
+        final var crop = image.getCropRect();
+        final var width = crop.width();
+        final var height = crop.height();
 
-        final Image.Plane[] planes = image.getPlanes();
-        final byte[] rowData = new byte[planes[0].getRowStride()];
-        final int bufferSize = width * height * ImageFormat.getBitsPerPixel(ImageFormat.YUV_420_888) / 8;
-        final ByteBuffer output = ByteBuffer.allocateDirect(bufferSize);
+        final var planes = image.getPlanes();
+        final var rowData = new byte[planes[0].getRowStride()];
+        final var bufferSize = width * height * ImageFormat.getBitsPerPixel(ImageFormat.YUV_420_888) / 8;
+        final var output = ByteBuffer.allocateDirect(bufferSize);
 
-        int channelOffset = 0;
-        int outputStride = 0;
+        var channelOffset = 0;
+        var outputStride = 0;
 
         for (int planeIndex = 0; planeIndex < 3; planeIndex++) {
-            if (planeIndex == 0) {
-                channelOffset = 0;
-                outputStride = 1;
-            } else if (planeIndex == 1) {
-                channelOffset = width * height + 1;
-                outputStride = 2;
-            } else if (planeIndex == 2) {
-                channelOffset = width * height;
-                outputStride = 2;
+            switch (planeIndex) {
+                case 0 -> {
+                    channelOffset = 0;
+                    outputStride = 1;
+                }
+                case 1 -> {
+                    channelOffset = width * height + 1;
+                    outputStride = 2;
+                }
+                case 2 -> {
+                    channelOffset = width * height;
+                    outputStride = 2;
+                }
             }
 
-            final ByteBuffer buffer = planes[planeIndex].getBuffer();
-            final int rowStride = planes[planeIndex].getRowStride();
-            final int pixelStride = planes[planeIndex].getPixelStride();
+            final var buffer = planes[planeIndex].getBuffer();
+            final var rowStride = planes[planeIndex].getRowStride();
+            final var pixelStride = planes[planeIndex].getPixelStride();
 
-            final int shift = (planeIndex == 0) ? 0 : 1;
-            final int widthShifted = width >> shift;
-            final int heightShifted = height >> shift;
+            final var shift = (planeIndex == 0) ? 0 : 1;
+            final var widthShifted = width >> shift;
+            final var heightShifted = height >> shift;
 
             buffer.position(rowStride * (crop.top >> shift) + pixelStride * (crop.left >> shift));
 
@@ -116,15 +120,15 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
 
     public static Bitmap cloneToBitmap(Context context, Image image, ImageProxy imageProxy) {
         // Get the YUV data
-        final ByteBuffer yuvBytes = imageToByteBuffer(image);
+        final var yuvBytes = imageToByteBuffer(image);
 
         // Convert YUV to RGB
-        final RenderScript rs = RenderScript.create(context);
+        final var rs = RenderScript.create(context);
 
-        final Bitmap bitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
-        final Allocation allocationRgb = Allocation.createFromBitmap(rs, bitmap);
+        final var bitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
+        final var allocationRgb = Allocation.createFromBitmap(rs, bitmap);
 
-        final Allocation allocationYuv = Allocation.createSized(rs, Element.U8(rs), yuvBytes.array().length);
+        final var allocationYuv = Allocation.createSized(rs, Element.U8(rs), yuvBytes.array().length);
         allocationYuv.copyFrom(yuvBytes.array());
 
         ScriptIntrinsicYuvToRGB scriptYuvToRgb = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
@@ -144,7 +148,7 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
     }
 
     public static Bitmap rotateBitmap(Bitmap image, float degrees) {
-        Matrix matrix = new Matrix();
+        var matrix = new Matrix();
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
     }

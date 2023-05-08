@@ -1,0 +1,8 @@
+<resources>
+    <string name="rx_ean_reader_app_name">RxEanReader</string>
+
+    <string name="rx_ean_reader_wrong_type">Błędny typ EAN</string>
+
+    <string name="rx_ean_reader_title_read">Skanowanie</string>
+    <string name="rx_ean_reader_title_view">Podgląd</string>
+</resources>

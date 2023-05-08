@@ -6,7 +6,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.google.mlkit.vision.barcode.Barcode;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -23,57 +23,57 @@ import lombok.RequiredArgsConstructor;
 public class QrCode {
 
     @Getter
-    private final Barcode qrCode;
+    private final Barcode barcode;
     @Getter
     private final Bitmap image;
 
     public QrCodeType getType() {
-        return QrCodeType.fromType(qrCode.getValueType());
+        return QrCodeType.fromType(barcode.getValueType());
     }
 
     //<editor-fold desc="delegate">
     public String getRawValue() {
-        return qrCode.getRawValue();
+        return barcode.getRawValue();
     }
 
     public String getDisplayValue() {
-        return qrCode.getDisplayValue();
+        return barcode.getDisplayValue();
     }
 
     public QrCodeEmail getEmail() {
-        return new QrCodeEmail(qrCode.getEmail());
+        return new QrCodeEmail(barcode.getEmail());
     }
 
     public QrCodePhone getPhone() {
-        return new QrCodePhone(qrCode.getPhone());
+        return new QrCodePhone(barcode.getPhone());
     }
 
     public QrCodeSms getSms() {
-        return new QrCodeSms(qrCode.getSms());
+        return new QrCodeSms(barcode.getSms());
     }
 
     public QrCodeWiFi getWifi() {
-        return new QrCodeWiFi(qrCode.getWifi());
+        return new QrCodeWiFi(barcode.getWifi());
     }
 
     public QrCodeUrlBookmark getUrl() {
-        return new QrCodeUrlBookmark(qrCode.getUrl());
+        return new QrCodeUrlBookmark(barcode.getUrl());
     }
 
     public QrCodeGeoPoint getGeoPoint() {
-        return new QrCodeGeoPoint(qrCode.getGeoPoint());
+        return new QrCodeGeoPoint(barcode.getGeoPoint());
     }
 
     public QrCodeDriverLicense getDriverLicense() {
-        return new QrCodeDriverLicense(qrCode.getDriverLicense());
+        return new QrCodeDriverLicense(barcode.getDriverLicense());
     }
 
     public QrCodeCalendarEvent getCalendarEvent() {
-        return new QrCodeCalendarEvent(qrCode.getCalendarEvent());
+        return new QrCodeCalendarEvent(barcode.getCalendarEvent());
     }
 
     public QrCodeContactInfo getContactInfo() {
-        return new QrCodeContactInfo(qrCode.getContactInfo());
+        return new QrCodeContactInfo(barcode.getContactInfo());
     }
     //</editor-fold>
 

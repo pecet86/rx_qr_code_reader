@@ -1,6 +1,5 @@
 package pl.pecet.rx_qr_code_reader.internal.ui;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.ContentView;
@@ -51,15 +50,15 @@ class BaseFragment extends Fragment {
         if (title == null) {
             return;
         }
-        Activity activity = requireActivity();
-        if (activity instanceof AppCompatActivity) {
-            androidx.appcompat.app.ActionBar actionBar = ((AppCompatActivity) activity).getSupportActionBar();
+        var activity = requireActivity();
+        if (activity instanceof AppCompatActivity a) {
+            var actionBar = a.getSupportActionBar();
             if (actionBar != null) {
                 oldTitle = actionBar.getTitle();
                 actionBar.setTitle(title);
             }
         } else {
-            android.app.ActionBar actionBar = activity.getActionBar();
+            var actionBar = activity.getActionBar();
             if (actionBar != null) {
                 oldTitle = actionBar.getTitle();
                 actionBar.setTitle(title);

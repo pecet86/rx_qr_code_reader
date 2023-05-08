@@ -1,6 +1,11 @@
 package pl.pecet.rx_qr_code_reader.internal.ui;
 
-import android.Manifest;
+import static android.Manifest.permission.CAMERA;
+import static android.widget.Toast.LENGTH_SHORT;
+import static pl.pecet.rx_qr_code_reader.R.id.qr_code_fragment;
+import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment;
+import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_wrong_type;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -9,6 +14,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.camera.core.ExperimentalGetImage;
 import androidx.fragment.app.Fragment;
 
 import com.tbruyelle.rxpermissions3.RxPermissions;
@@ -18,21 +24,17 @@ import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.core.MaybeEmitter;
-import pl.pecet.rx_qr_code_reader.R;
 import pl.pecet.rx_qr_code_reader.api.QrCodeConfig;
 import pl.pecet.rx_qr_code_reader.internal.data.QrCode;
 import pl.pecet.rx_qr_code_reader.internal.support.OrientationUtils;
 
-import static android.widget.Toast.LENGTH_SHORT;
-import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment;
-import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_wrong_type;
-
+@ExperimentalGetImage
 public class RxQrCodeFragment extends BaseFragment {
 
     private static final String[] PERMISSIONS;
 
     static {
-        List<String> list = Collections.singletonList(Manifest.permission.CAMERA);
+        List<String> list = Collections.singletonList(CAMERA);
         PERMISSIONS = list.toArray(new String[0]);
     }
 
@@ -64,7 +66,7 @@ public class RxQrCodeFragment extends BaseFragment {
                 .addCallback(requireActivity(), new OnBackPressedCallback(true) {
                     @Override
                     public void handleOnBackPressed() {
-                        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.qr_code_fragment);
+                        var fragment = getChildFragmentManager().findFragmentById(qr_code_fragment);
                         if (fragment instanceof ReadFragment) {
                             emitter.onComplete();
                         } else if (fragment instanceof ViewFragment) {
@@ -79,10 +81,10 @@ public class RxQrCodeFragment extends BaseFragment {
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
         super.onAttachFragment(childFragment);
-        if (childFragment instanceof ReadFragment) {
-            initReadFragment((ReadFragment) childFragment);
-        } else if (childFragment instanceof ViewFragment) {
-            initViewFragment((ViewFragment) childFragment);
+        if (childFragment instanceof ReadFragment a) {
+            initReadFragment(a);
+        } else if (childFragment instanceof ViewFragment b) {
+            initViewFragment(b);
         }
     }
 
@@ -103,7 +105,7 @@ public class RxQrCodeFragment extends BaseFragment {
     private void init() {
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.qr_code_fragment, getReadFragment())
+                .replace(qr_code_fragment, getReadFragment())
                 .addToBackStack(ReadFragment.TAG)
                 .commit();
     }
@@ -157,7 +159,7 @@ public class RxQrCodeFragment extends BaseFragment {
     private synchronized void toRead() {
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.qr_code_fragment, getReadFragment())
+                .replace(qr_code_fragment, getReadFragment())
                 .addToBackStack(ReadFragment.TAG)
                 .commit();
     }
@@ -172,7 +174,7 @@ public class RxQrCodeFragment extends BaseFragment {
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.qr_code_fragment, getViewFragment())
+                .replace(qr_code_fragment, getViewFragment())
                 .addToBackStack(ViewFragment.TAG)
                 .commit();
     }
@@ -198,7 +200,7 @@ public class RxQrCodeFragment extends BaseFragment {
     }
 
     public static boolean isGranted(RxPermissions rxPermissions, String... permissions) {
-        for (String permission : permissions) {
+        for (var permission : permissions) {
             if (!isGranted(rxPermissions, permission)) {
                 return false;
             }

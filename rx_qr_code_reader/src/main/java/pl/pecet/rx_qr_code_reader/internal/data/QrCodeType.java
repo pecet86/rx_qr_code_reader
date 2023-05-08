@@ -1,6 +1,6 @@
 package pl.pecet.rx_qr_code_reader.internal.data;
 
-import com.google.mlkit.vision.barcode.Barcode;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
 import lombok.Getter;
 
@@ -27,7 +27,7 @@ public enum QrCodeType {
     }
 
     public static QrCodeType fromType(int value) {
-        for (QrCodeType type : QrCodeType.values()) {
+        for (var type : QrCodeType.values()) {
             if (type.type == value) {
                 return type;
             }

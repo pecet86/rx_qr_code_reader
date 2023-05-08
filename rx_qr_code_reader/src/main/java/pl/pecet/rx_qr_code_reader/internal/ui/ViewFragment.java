@@ -1,5 +1,8 @@
 package pl.pecet.rx_qr_code_reader.internal.ui;
 
+import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment_view;
+import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_title_view;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +17,6 @@ import lombok.Setter;
 import pl.pecet.rx_qr_code_reader.R;
 import pl.pecet.rx_qr_code_reader.api.QrCodeConfig;
 import pl.pecet.rx_qr_code_reader.internal.data.QrCode;
-
-import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment_view;
-import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_title_view;
 
 public class ViewFragment extends BaseFragment {
 
@@ -72,11 +72,7 @@ public class ViewFragment extends BaseFragment {
         typeView.setText(qrCode.getType().toString());
         valueView.setText(qrCode.getRawValue());
         displayValueView.setText(qrCode.getDisplayValue());
-        if (qrCode.getImage() != null) {
-            imageView.setImageBitmap(qrCode.getImage());
-        } else {
-            imageView.setImageBitmap(null);
-        }
+        imageView.setImageBitmap(qrCode.getImage() != null ? qrCode.getImage() : null);
     }
 
     private void initEvents() {

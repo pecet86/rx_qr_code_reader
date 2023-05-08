@@ -1,15 +1,15 @@
 package pl.pecet.rx_qr_code_reader.internal.data;
 
-import com.google.mlkit.vision.barcode.Barcode;
+import static com.google.mlkit.vision.barcode.common.Barcode.Phone;
 
 import lombok.Getter;
 
 public enum PhoneType {
-    UNKNOWN(Barcode.Phone.TYPE_UNKNOWN),
-    HOME(Barcode.Phone.TYPE_HOME),
-    WORK(Barcode.Phone.TYPE_WORK),
-    FAX(Barcode.Phone.TYPE_FAX),
-    MOBILE(Barcode.Phone.TYPE_MOBILE);
+    UNKNOWN(Phone.TYPE_UNKNOWN),
+    HOME(Phone.TYPE_HOME),
+    WORK(Phone.TYPE_WORK),
+    FAX(Phone.TYPE_FAX),
+    MOBILE(Phone.TYPE_MOBILE);
 
     @Getter
     private final int type;
@@ -19,7 +19,7 @@ public enum PhoneType {
     }
 
     public static PhoneType fromType(int value) {
-        for (PhoneType type : PhoneType.values()) {
+        for (var type : PhoneType.values()) {
             if (type.type == value) {
                 return type;
             }

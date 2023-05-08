@@ -1,6 +1,18 @@
 package pl.pecet.rx_qr_code_reader.internal.ui;
 
-import android.content.res.Configuration;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import static android.view.Surface.ROTATION_0;
+import static androidx.camera.core.AspectRatio.RATIO_16_9;
+import static androidx.camera.core.AspectRatio.RATIO_4_3;
+import static androidx.camera.core.AspectRatio.Ratio;
+import static androidx.camera.core.CameraSelector.LENS_FACING_BACK;
+import static androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST;
+import static androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY;
+import static com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE;
+import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment_read;
+import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_title_read;
+import static pl.pecet.rx_qr_code_reader.internal.support.OrientationUtils.getDeviceDefaultOrientation;
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,10 +22,8 @@ import android.util.Size;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.experimental.UseExperimental;
-import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ExperimentalLogging;
+import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
@@ -22,11 +32,9 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.barcode.Barcode;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 import pl.pecet.rx_qr_code_reader.R;
@@ -34,12 +42,7 @@ import pl.pecet.rx_qr_code_reader.api.QrCodeConfig;
 import pl.pecet.rx_qr_code_reader.internal.data.QrCode;
 import pl.pecet.rx_qr_code_reader.internal.support.QrCodeAnalyzer;
 
-import static android.view.Surface.ROTATION_0;
-import static pl.pecet.rx_qr_code_reader.R.layout.rx_qr_code_reader_fragment_read;
-import static pl.pecet.rx_qr_code_reader.R.string.rx_qr_code_reader_title_read;
-import static pl.pecet.rx_qr_code_reader.internal.support.OrientationUtils.getDeviceDefaultOrientation;
-
-@UseExperimental(markerClass = ExperimentalLogging.class)
+@ExperimentalGetImage
 public class ReadFragment extends BaseFragment {
 
     public static final String TAG = ReadFragment.class.getSimpleName();
@@ -69,17 +72,17 @@ public class ReadFragment extends BaseFragment {
     }
 
     @SuppressWarnings({"SuspiciousNameCombination", "SameParameterValue"})
-    private Size getSize(@AspectRatio.Ratio int aspectRatio) {
-        int width = config.getResolution();
-        int height = config.getResolution();
+    private Size getSize(@Ratio int aspectRatio) {
+        var width = config.getResolution();
+        var height = config.getResolution();
 
-        if (aspectRatio == AspectRatio.RATIO_4_3) {
+        if (aspectRatio == RATIO_4_3) {
             height = width * 4 / 3;
-        } else if (aspectRatio == AspectRatio.RATIO_16_9) {
+        } else if (aspectRatio == RATIO_16_9) {
             height = width * 16 / 9;
         }
 
-        return getDeviceDefaultOrientation(requireActivity()) == Configuration.ORIENTATION_PORTRAIT
+        return getDeviceDefaultOrientation(requireActivity()) == ORIENTATION_PORTRAIT
                 ? new Size(width, height)
                 : new Size(height, width);
     }
@@ -87,23 +90,22 @@ public class ReadFragment extends BaseFragment {
 
     @MainThread
     private void startCamera() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider
-                .getInstance(requireContext());
-        Executor executor = ContextCompat.getMainExecutor(requireContext());
+        var cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+        var executor = ContextCompat.getMainExecutor(requireContext());
         QrCodeConfigure.setMinLogLevel(Log.ERROR);
 
-        Size size = getSize(AspectRatio.RATIO_4_3);
+        var size = getSize(RATIO_4_3);
 
-        System.out.printf(
+        /*System.out.printf(
                 "startCamera: %d:%d\n",
                 config.getResolution(), config.getResolution()
-        );
+        );*/
 
-        CameraSelector cameraSelector = new CameraSelector
+        var cameraSelector = new CameraSelector
                 .Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .requireLensFacing(LENS_FACING_BACK)
                 .build();
-        Preview preview = new Preview
+        var preview = new Preview
                 .Builder()
                 // We want to show input from back camera of the device
                 .setTargetResolution(size)
@@ -114,18 +116,18 @@ public class ReadFragment extends BaseFragment {
         preview.setSurfaceProvider(textureView.getSurfaceProvider());
 
 
-        ImageCapture imageCapture = new ImageCapture
+        var imageCapture = new ImageCapture
                 .Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .setCaptureMode(CAPTURE_MODE_MINIMIZE_LATENCY)
                 .setTargetResolution(size)
                 //.setTargetAspectRatio(aspectRatio)
                 .setFlashMode(config.getFlashMode())
                 .setTargetRotation(ROTATION_0)
                 .build();
 
-        ImageAnalysis imageAnalyzer = new ImageAnalysis
+        var imageAnalyzer = new ImageAnalysis
                 .Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST)
                 .setTargetResolution(size)
                 //.setTargetAspectRatio(aspectRatio)
                 .setTargetRotation(ROTATION_0)
@@ -135,7 +137,7 @@ public class ReadFragment extends BaseFragment {
 
         cameraProviderFuture.addListener(() -> {
             try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                var cameraProvider = cameraProviderFuture.get();
                 cameraProvider.unbindAll();
                 cameraProvider
                         .bindToLifecycle(
@@ -156,8 +158,8 @@ public class ReadFragment extends BaseFragment {
     @MainThread
     private void analyzeComplete(List<Barcode> barcodes, Bitmap bitmap) {
         if (barcodes != null && !barcodes.isEmpty()) {
-            for (Barcode barcode : barcodes) {
-                if (barcode.getFormat() == Barcode.FORMAT_QR_CODE) {
+            for (var barcode : barcodes) {
+                if (barcode.getFormat() == FORMAT_QR_CODE) {
                     listener.accept(new QrCode(barcode, cropImage(bitmap, barcode.getBoundingBox())));
                 }
             }

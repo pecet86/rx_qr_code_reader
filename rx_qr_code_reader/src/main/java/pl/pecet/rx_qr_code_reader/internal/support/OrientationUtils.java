@@ -1,16 +1,20 @@
 package pl.pecet.rx_qr_code_reader.internal.support;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.view.Surface;
-import android.view.WindowManager;
-
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER;
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import static android.view.Surface.ROTATION_0;
+import static android.view.Surface.ROTATION_180;
+import static android.view.Surface.ROTATION_270;
+import static android.view.Surface.ROTATION_90;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.WindowManager;
 
 /**
  * Static methods related to device orientation.
@@ -37,19 +41,19 @@ public class OrientationUtils {
      * Locks the device window in actual screen mode.
      */
     public static void lockOrientation(Activity activity) {
-        final int orientation = activity.getResources().getConfiguration().orientation;
-        final int rotation = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        final var orientation = activity.getResources().getConfiguration().orientation;
+        final var rotation = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
 
-        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90) {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (rotation == ROTATION_0 || rotation == ROTATION_90) {
+            if (orientation == ORIENTATION_PORTRAIT) {
                 activity.setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
-            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            } else if (orientation == ORIENTATION_LANDSCAPE) {
                 activity.setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
             }
-        } else if (rotation == Surface.ROTATION_180 || rotation == Surface.ROTATION_270) {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        } else if (rotation == ROTATION_180 || rotation == ROTATION_270) {
+            if (orientation == ORIENTATION_PORTRAIT) {
                 activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_PORTRAIT);
-            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            } else if (orientation == ORIENTATION_LANDSCAPE) {
                 activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
             }
         }
@@ -63,17 +67,15 @@ public class OrientationUtils {
     }
 
     public static int getDeviceDefaultOrientation(Activity activity) {
-        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-        Configuration config = activity.getResources().getConfiguration();
-        int rotation = windowManager.getDefaultDisplay().getRotation();
+        var windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        var config = activity.getResources().getConfiguration();
+        var rotation = windowManager.getDefaultDisplay().getRotation();
 
-        if (((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-                config.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
-                config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-            return Configuration.ORIENTATION_LANDSCAPE;
+        if (((rotation == ROTATION_0 || rotation == ROTATION_180) && config.orientation == ORIENTATION_LANDSCAPE)
+                || ((rotation == ROTATION_90 || rotation == ROTATION_270) && config.orientation == ORIENTATION_PORTRAIT)) {
+            return ORIENTATION_LANDSCAPE;
         } else {
-            return Configuration.ORIENTATION_PORTRAIT;
+            return ORIENTATION_PORTRAIT;
         }
     }
 }

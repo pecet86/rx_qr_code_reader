@@ -1,11 +1,14 @@
 package pl.pecet.rx_qr_code_reader.api;
 
+import static io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread;
+
 import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.camera.core.ExperimentalGetImage;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -15,44 +18,43 @@ import io.reactivex.rxjava3.core.MaybeEmitter;
 import pl.pecet.rx_qr_code_reader.internal.data.QrCode;
 import pl.pecet.rx_qr_code_reader.internal.ui.RxQrCodeFragment;
 
-import static io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread;
-
+@ExperimentalGetImage
 public class RxQrCode {
 
     private static final String TAG = RxQrCode.class.getSimpleName();
     @VisibleForTesting
-    private final Lazy<RxQrCodeFragment> rxQrCodeFragment;
+    private final Lazy<RxQrCodeFragment> fragments;
     @IdRes
     private final int containerViewId;
 
     public RxQrCode(@IdRes int containerViewId, @NonNull FragmentActivity activity) {
         this.containerViewId = containerViewId;
-        rxQrCodeFragment = getLazySingleton(activity.getSupportFragmentManager());
+        fragments = getLazySingleton(activity.getSupportFragmentManager());
     }
 
     public RxQrCode(@IdRes int containerViewId, @NonNull Fragment fragment) {
         this.containerViewId = containerViewId;
-        rxQrCodeFragment = getLazySingleton(fragment.getChildFragmentManager());
+        fragments = getLazySingleton(fragment.getChildFragmentManager());
     }
 
     @NonNull
     private Lazy<RxQrCodeFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
-        return new Lazy<RxQrCodeFragment>() {
-            private RxQrCodeFragment rxQrCodeFragment;
+        return new Lazy<>() {
+            private RxQrCodeFragment fragment;
 
             @Override
             public synchronized RxQrCodeFragment get() {
-                if (rxQrCodeFragment == null) {
-                    rxQrCodeFragment = getRxQrCodeFragment(fragmentManager);
+                if (fragment == null) {
+                    fragment = getRxQrCodeFragment(fragmentManager);
                 }
-                return rxQrCodeFragment;
+                return fragment;
             }
 
             @Override
             public synchronized void remove() {
-                if (rxQrCodeFragment != null) {
-                    fragmentManager.beginTransaction().remove(rxQrCodeFragment).commit();
-                    rxQrCodeFragment = null;
+                if (fragment != null) {
+                    fragmentManager.beginTransaction().remove(fragment).commit();
+                    fragment = null;
                 }
             }
         };
@@ -73,7 +75,7 @@ public class RxQrCode {
 
     private void clear() {
         log(TAG, "clear", "ok");
-        rxQrCodeFragment.remove();
+        fragments.remove();
     }
 
     public Maybe<QrCode> request(Fragment fragment) {
@@ -86,7 +88,7 @@ public class RxQrCode {
 
     public Maybe<QrCode> request(@NonNull QrCodeConfig config) {
         return Maybe
-                .create((MaybeEmitter<QrCode> emitter) -> rxQrCodeFragment.get().request(config, emitter))
+                .create((MaybeEmitter<QrCode> emitter) -> fragments.get().request(config, emitter))
                 .doOnSuccess(barcode -> clear())
                 .doOnComplete(this::clear)
                 .doOnError(throwable -> clear())
