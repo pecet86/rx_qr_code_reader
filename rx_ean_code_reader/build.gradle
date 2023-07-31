@@ -7,8 +7,8 @@ apply from: "$rootDir/gradle/configuration.gradle"
 android {
     namespace 'pl.pecet.rx_ean_reader'
     resourcePrefix config.resourcePrefix
-    compileSdk config.compileSdkVersion
-    buildToolsVersion = config.buildToolsVersion
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         minSdkVersion config.minSdkVersion
@@ -39,12 +39,12 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation "androidx.appcompat:appcompat:${deps.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
+    implementation "com.google.android.material:material:${deps.material}"
 
     // Google ML Kit dependencies
-    api 'com.google.mlkit:barcode-scanning:17.1.0'
+    api "com.google.mlkit:barcode-scanning:${deps.barcode_scanning}"
 
     //androidx.camera
     implementation "androidx.camera:camera-core:${deps.camerax}"
@@ -54,11 +54,11 @@ dependencies {
     //implementation "androidx.camera:camera-extensions:${camerax}"
 
     //RxJava
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
+    implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
 
-    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.1'
-    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+    implementation "com.f2prateek.rx.preferences2:rx-preferences:${deps.rxpreferences}"
+    implementation "com.github.tbruyelle:rxpermissions:${deps.rxpermissions}"
 
     //lombok
     //noinspection AnnotationProcessorOnCompilePath

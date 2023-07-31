@@ -5,8 +5,8 @@ apply from: "$rootDir/gradle/configuration.gradle"
 
 android {
     namespace 'pl.pecet.rx_qr_code_reader.example'
-    compileSdk config.compileSdkVersion
-    buildToolsVersion = config.buildToolsVersion
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         minSdkVersion config.minSdkVersion
@@ -46,13 +46,13 @@ dependencies {
         }
     }
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation "androidx.appcompat:appcompat:${deps.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
+    implementation "com.google.android.material:material:${deps.material}"
 
     //RxJava
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
+    implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
 
     //autodispose
     implementation "com.uber.autodispose2:autodispose:${deps.autodispose}"
