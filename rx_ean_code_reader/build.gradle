@@ -1,4 +1,15 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'maven-publish'
 
 apply from: "$rootDir/gradle/dependencies.gradle"
@@ -13,6 +24,8 @@ android {
     defaultConfig {
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
+
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     compileOptions {

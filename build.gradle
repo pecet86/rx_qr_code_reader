@@ -7,10 +7,17 @@ buildscript {
         mavenLocal()
         mavenCentral()
         google()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.44.0'
+        classpath 'org.ajoberstar:gradle-git:1.7.2'
+        //classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
@@ -22,10 +29,53 @@ allprojects {
         mavenLocal()
         mavenCentral()
         google()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: 'org.ajoberstar.grgit'
+def tagName = "v" + versionName()
+
+def getStatus() {
+    def describe = grgit.describe()
+    def pattern = /^(.*)-([0-9]+)-(g[0-9a-z]+)$/
+    def tag = describe =~ pattern
+
+    if (tag.matches()) {
+        tag = tag[0][1];
+        def logs = grgit.log {
+            range(tag, 'HEAD')
+        }
+        if (!logs.isEmpty()) {
+            return logs
+                    .collect { "Autor: ${it.author.name}; Data: ${it.getDate().format('yyyy-MM-dd HH:mm:ss')}; Opis:${it.fullMessage}" }
+                    .asImmutable()
+                    .toString()
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
+task releng {
+    description = "Application release: $tagName"
+    doLast {
+        def changes = getStatus()
+        if (changes == null) {
+            throw new RuntimeException("There are changes not commited yet.\n$changes")
+        }
+
+        //add tag
+        grgit.tag.add {
+            name = tagName
+            message = "Release of $tagName"
+        }
+    }
 }
