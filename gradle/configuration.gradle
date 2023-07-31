@@ -1,0 +1,9 @@
+ext.config = [
+        compileSdkVersion  : 33,
+        buildToolsVersion  : '34.0.0',
+        minSdkVersion      : 24,
+        targetSdkVersion   : 31,
+        resourcePrefix     : 'rx_qr_code_reader_',
+        sourceCompatibility: JavaVersion.VERSION_17,
+        targetCompatibility: JavaVersion.VERSION_17,
+]

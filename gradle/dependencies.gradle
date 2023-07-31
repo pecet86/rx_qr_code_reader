@@ -1,0 +1,6 @@
+ext.deps = [
+        camerax      : '1.3.0-beta01', //'1.3.0-beta01', wymaga sdk 34
+        autodispose  : '2.2.1',
+        kotlin_stdlib: '1.8.0',
+        lombok       : '1.18.28',
+]
