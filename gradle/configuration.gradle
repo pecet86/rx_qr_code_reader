@@ -3,7 +3,8 @@ ext.config = [
         buildToolsVersion  : '34.0.0',
         minSdkVersion      : 24,
         targetSdkVersion   : 31,
-        resourcePrefix     : 'rx_qr_code_reader_',
+        resourcePrefix     : 'rx_code_reader_',
+        namespace          : 'pl.pecet.rx_code_reader',
         sourceCompatibility: JavaVersion.VERSION_17,
         targetCompatibility: JavaVersion.VERSION_17,
 ]

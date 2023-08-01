@@ -1,7 +1,7 @@
-include ':rx_qr_code_reader'
-include ':rx_ean_code_reader'
+include ':rx_code_reader_qr'
+include ':rx_code_reader_ean'
 include ':app'
-rootProject.name = "RxQrCodeReader"
+rootProject.name = "RxCodeReader"
 buildCache {
     local {
         directory = new File(rootDir, '.gradle/build-cache')

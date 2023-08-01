@@ -12,7 +12,7 @@
         tools:ignore="AllowBackup">
 
         <activity
-            android:name="pl.pecet.rx_qr_code_reader.example.MainActivity"
+            android:name="pl.pecet.rx_code_reader.example.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

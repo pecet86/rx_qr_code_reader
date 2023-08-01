@@ -4,7 +4,7 @@ apply from: "$rootDir/gradle/dependencies.gradle"
 apply from: "$rootDir/gradle/configuration.gradle"
 
 android {
-    namespace 'pl.pecet.rx_qr_code_reader.example'
+    namespace "${config.namespace}.example"
     compileSdkVersion config.compileSdkVersion
     buildToolsVersion config.buildToolsVersion
 
@@ -18,8 +18,9 @@ android {
 
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -32,8 +33,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation project(':rx_qr_code_reader')
-    implementation project(':rx_ean_code_reader')
+    implementation project(':rx_code_reader_qr')
+    implementation project(':rx_code_reader_ean')
 
     implementation "androidx.camera:camera-core:${deps.camerax}"
 
