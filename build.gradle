@@ -37,8 +37,8 @@ allprojects {
   }
 }
 
-task clean(type: Delete) {
-  delete rootProject.buildDir
+tasks.register('clean', Delete) {
+  delete layout.buildDirectory
 }
 
 apply plugin: 'org.ajoberstar.grgit'
@@ -67,7 +67,7 @@ def getStatus() {
   }
 }
 
-task releng {
+tasks.register('releng') {
   description = "Application release: $tagName"
   doLast {
     def changes = getStatus()

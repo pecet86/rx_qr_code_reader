@@ -1,6 +1,7 @@
+# https://github.com/jitpack/android-example
 jdk:
   - openjdk17
-before_install:
-  - ./gradlew clean publishToMavenLocal
-install:
-  - ./gradlew clean install
+#before_install:
+#  - ./gradlew clean publishToMavenLocal
+#install:
+#  - ./gradlew clean install
