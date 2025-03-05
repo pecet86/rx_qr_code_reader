@@ -2,6 +2,16 @@ include ':rx_code_reader_qr'
 include ':rx_code_reader_ean'
 include ':app'
 rootProject.name = "RxCodeReader"
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    google()
+    maven { url "https://jitpack.io" }
+    maven { url 'https://plugins.gradle.org/m2/' }
+  }
+}
 buildCache {
   local {
     directory = new File(rootDir, '.gradle/build-cache')
