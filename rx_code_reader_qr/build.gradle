@@ -79,8 +79,8 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
     implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
 
-    implementation "com.f2prateek.rx.preferences2:rx-preferences:${deps.rxpreferences}"
-    implementation "com.github.tbruyelle:rxpermissions:${deps.rxpermissions}"
+  implementation "com.f2prateek.rx.preferences2:rx-preferences:${deps.rxpreferences}"
+  implementation "com.github.tbruyelle:RxPermissions:${deps.rxpermissions}"
 
     //lombok
     //noinspection AnnotationProcessorOnCompilePath
