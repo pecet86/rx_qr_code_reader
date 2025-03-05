@@ -55,6 +55,21 @@ public class ReadFragment extends BaseFragment {
         super(rx_code_reader_fragment_read);
     }
 
+    private static Bitmap cropImage(Bitmap image, Rect rect) {
+        if (rect == null || image == null) {
+            return image;
+        }
+        try {
+            return Bitmap.createBitmap(
+                    image,
+                    rect.left, rect.top,
+                    rect.width(), rect.height()
+            );
+        } catch (IllegalArgumentException ex) {
+            return image;
+        }
+    }
+
     void init(@NonNull EanConfig config, @NonNull Consumer<EanCode> listener) {
         this.config = config;
         this.listener = listener;
@@ -85,7 +100,6 @@ public class ReadFragment extends BaseFragment {
                 ? new Size(width, height)
                 : new Size(height, width);
     }
-
 
     @MainThread
     private void startCamera() {
@@ -162,21 +176,6 @@ public class ReadFragment extends BaseFragment {
                     listener.accept(new EanCode(barcode, cropImage(bitmap, barcode.getBoundingBox())));
                 }
             }
-        }
-    }
-
-    private static Bitmap cropImage(Bitmap image, Rect rect) {
-        if (rect == null || image == null) {
-            return image;
-        }
-        try {
-            return Bitmap.createBitmap(
-                    image,
-                    rect.left, rect.top,
-                    rect.width(), rect.height()
-            );
-        } catch (IllegalArgumentException ex) {
-            return image;
         }
     }
 }

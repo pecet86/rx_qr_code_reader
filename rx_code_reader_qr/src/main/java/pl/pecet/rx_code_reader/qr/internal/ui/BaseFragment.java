@@ -10,16 +10,25 @@ import androidx.fragment.app.Fragment;
 class BaseFragment extends Fragment {
 
     protected String TAG;
+    private CharSequence oldTitle;
 
     {
         TAG = getClass().getSimpleName();
     }
 
-    private CharSequence oldTitle;
-
     @ContentView
     protected BaseFragment(@LayoutRes int contentLayoutId) {
         super(contentLayoutId);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected static void log(String TAG, String path, String value, Throwable th) {
+        Log.e(String.format("%s.%s", TAG, path), value, th);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected static void log(String TAG, String path, String value) {
+        Log.d(String.format("%s.%s", TAG, path), value);
     }
 
     @Override
@@ -33,16 +42,6 @@ class BaseFragment extends Fragment {
     protected boolean logOnComplete(String path, String value, Throwable th) {
         log(TAG, path, value, th);
         return true;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    protected static void log(String TAG, String path, String value, Throwable th) {
-        Log.e(String.format("%s.%s", TAG, path), value, th);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    protected static void log(String TAG, String path, String value) {
-        Log.d(String.format("%s.%s", TAG, path), value);
     }
     //</editor-fold>
 

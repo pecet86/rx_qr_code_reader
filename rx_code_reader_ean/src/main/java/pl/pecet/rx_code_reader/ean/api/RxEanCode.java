@@ -37,6 +37,16 @@ public class RxEanCode {
         this.fragments = getLazySingleton(fragments.getChildFragmentManager());
     }
 
+    @SuppressWarnings("SameParameterValue")
+    protected static void log(String TAG, String path, String value, Throwable th) {
+        Log.e(String.format("%s.%s", TAG, path), value, th);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected static void log(String TAG, String path, String value) {
+        Log.d(String.format("%s.%s", TAG, path), value);
+    }
+
     @NonNull
     private Lazy<RxEanCodeFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
         return new Lazy<>() {
@@ -102,16 +112,6 @@ public class RxEanCode {
     protected boolean logOnComplete(String path, String value, Throwable th) {
         log(TAG, path, value, th);
         return true;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    protected static void log(String TAG, String path, String value, Throwable th) {
-        Log.e(String.format("%s.%s", TAG, path), value, th);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    protected static void log(String TAG, String path, String value) {
-        Log.d(String.format("%s.%s", TAG, path), value);
     }
     //</editor-fold>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
@@ -23,21 +23,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        app:srcCompat="@drawable/rx_code_reader_link"
         android:tint="@color/rx_code_reader_icon_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
 
         app:layout_constraintStart_toStartOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar" />
+        app:srcCompat="@drawable/rx_code_reader_link" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toEndOf="@+id/linkIcon"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         tools:text="URL" />
 
     <ScrollView
@@ -46,10 +46,10 @@
         android:layout_margin="10dp"
         android:fillViewport="true"
 
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toTopOf="@+id/buttons"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -76,10 +76,10 @@
                 android:layout_height="0dp"
                 android:scaleType="fitCenter"
 
-                app:layout_constraintStart_toEndOf="@+id/image_guideline_start"
-                app:layout_constraintEnd_toStartOf="@+id/image_guideline_end"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/image_guideline_end"
+                app:layout_constraintStart_toEndOf="@+id/image_guideline_start"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/test_qr_code" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -125,19 +125,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:orientation="horizontal"
         android:padding="10dp"
 
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/rx_code_reader_replay"
-
             android:id="@+id/replay"
+
+            style="@style/rx_code_reader_replay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -145,9 +145,9 @@
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/rx_code_reader_check"
-
             android:id="@+id/check"
+
+            style="@style/rx_code_reader_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -155,9 +155,9 @@
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/rx_code_reader_clear"
-
             android:id="@+id/clear"
+
+            style="@style/rx_code_reader_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

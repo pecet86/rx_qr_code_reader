@@ -1,11 +1,11 @@
 buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    google()
+    maven { url "https://jitpack.io" }
+    maven { url 'https://plugins.gradle.org/m2/' }
+  }
 }
 
 apply plugin: 'com.android.library'
@@ -16,76 +16,76 @@ apply from: "$rootDir/gradle/dependencies.gradle"
 apply from: "$rootDir/gradle/configuration.gradle"
 
 android {
-    namespace "${config.namespace}.qr"
-    resourcePrefix config.resourcePrefix
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+  namespace "${config.namespace}.qr"
+  resourcePrefix config.resourcePrefix
+  compileSdkVersion config.compileSdkVersion
+  buildToolsVersion config.buildToolsVersion
 
-    defaultConfig {
-        minSdkVersion config.minSdkVersion
-        targetSdkVersion config.targetSdkVersion
+  defaultConfig {
+    minSdkVersion config.minSdkVersion
+    targetSdkVersion config.targetSdkVersion
 
-        consumerProguardFiles 'proguard-rules.pro'
-    }
+    consumerProguardFiles 'proguard-rules.pro'
+  }
 
-    compileOptions {
-        sourceCompatibility = config.sourceCompatibility
-        targetCompatibility = config.targetCompatibility
-    }
+  compileOptions {
+    sourceCompatibility = config.sourceCompatibility
+    targetCompatibility = config.targetCompatibility
+  }
 
-    publishing {
-        // Publishes "fullRelease" build variant with "fullRelease" component created by
-        // Android Gradle plugin
-        singleVariant("release")
-    }
+  publishing {
+    // Publishes "fullRelease" build variant with "fullRelease" component created by
+    // Android Gradle plugin
+    singleVariant("release")
+  }
 
-    buildFeatures {
-        dataBinding true
-        viewBinding true
-    }
+  buildFeatures {
+    dataBinding true
+    viewBinding true
+  }
 
-    lint {
-        abortOnError false
-    }
+  lint {
+    abortOnError false
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+  implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation "androidx.appcompat:appcompat:${deps.appcompat}"
-    implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
-    implementation "com.google.android.material:material:${deps.material}"
+  implementation "androidx.appcompat:appcompat:${deps.appcompat}"
+  implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
+  implementation "com.google.android.material:material:${deps.material}"
 
-    // Google ML Kit dependencies
-    api "com.google.mlkit:barcode-scanning:${deps.barcode_scanning}"
+  // Google ML Kit dependencies
+  api "com.google.mlkit:barcode-scanning:${deps.barcode_scanning}"
 
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${deps.kotlin_stdlib}") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${deps.kotlin_stdlib}") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
+  constraints {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${deps.kotlin_stdlib}") {
+      because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
     }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${deps.kotlin_stdlib}") {
+      because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+    }
+  }
 
-    //androidx.camera
-    implementation "androidx.camera:camera-core:${deps.camerax}"
-    implementation "androidx.camera:camera-camera2:${deps.camerax}"
-    implementation "androidx.camera:camera-lifecycle:${deps.camerax}"
-    implementation "androidx.camera:camera-view:${deps.camerax}"
-    //implementation "androidx.camera:camera-extensions:${camerax}"
+  //androidx.camera
+  implementation "androidx.camera:camera-core:${deps.camerax}"
+  implementation "androidx.camera:camera-camera2:${deps.camerax}"
+  implementation "androidx.camera:camera-lifecycle:${deps.camerax}"
+  implementation "androidx.camera:camera-view:${deps.camerax}"
+  //implementation "androidx.camera:camera-extensions:${camerax}"
 
-    //RxJava
-    implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
-    implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
+  //RxJava
+  implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
+  implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
 
   implementation "com.f2prateek.rx.preferences2:rx-preferences:${deps.rxpreferences}"
   implementation "com.github.tbruyelle:RxPermissions:${deps.rxpermissions}"
 
-    //lombok
-    //noinspection AnnotationProcessorOnCompilePath
-    compileOnly "org.projectlombok:lombok:${deps.lombok}"
-    annotationProcessor "org.projectlombok:lombok:${deps.lombok}"
+  //lombok
+  //noinspection AnnotationProcessorOnCompilePath
+  compileOnly "org.projectlombok:lombok:${deps.lombok}"
+  annotationProcessor "org.projectlombok:lombok:${deps.lombok}"
 }
 
 apply from: "$rootDir/gradle/gradle-mvn-push.gradle"

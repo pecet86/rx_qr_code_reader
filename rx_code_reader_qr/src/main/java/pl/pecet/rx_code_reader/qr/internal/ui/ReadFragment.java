@@ -55,6 +55,17 @@ public class ReadFragment extends BaseFragment {
         super(rx_code_reader_fragment_read);
     }
 
+    private static Bitmap cropImage(Bitmap image, Rect rect) {
+        if (rect == null || image == null) {
+            return image;
+        }
+        return Bitmap.createBitmap(
+                image,
+                rect.left, rect.top,
+                rect.width(), rect.height()
+        );
+    }
+
     void init(@NonNull QrCodeConfig config, @NonNull Consumer<QrCode> listener) {
         this.config = config;
         this.listener = listener;
@@ -86,7 +97,6 @@ public class ReadFragment extends BaseFragment {
                 ? new Size(width, height)
                 : new Size(height, width);
     }
-
 
     @MainThread
     private void startCamera() {
@@ -164,16 +174,5 @@ public class ReadFragment extends BaseFragment {
                 }
             }
         }
-    }
-
-    private static Bitmap cropImage(Bitmap image, Rect rect) {
-        if (rect == null || image == null) {
-            return image;
-        }
-        return Bitmap.createBitmap(
-                image,
-                rect.left, rect.top,
-                rect.width(), rect.height()
-        );
     }
 }

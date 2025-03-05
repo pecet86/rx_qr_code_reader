@@ -48,6 +48,19 @@ public class RxQrCodeFragment extends BaseFragment {
         super(rx_code_reader_fragment);
     }
 
+    public static boolean isGranted(RxPermissions rxPermissions, String permission) {
+        return rxPermissions.isGranted(permission);
+    }
+
+    public static boolean isGranted(RxPermissions rxPermissions, String... permissions) {
+        for (var permission : permissions) {
+            if (!isGranted(rxPermissions, permission)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,19 +206,6 @@ public class RxQrCodeFragment extends BaseFragment {
         } else {
             init();
         }
-    }
-
-    public static boolean isGranted(RxPermissions rxPermissions, String permission) {
-        return rxPermissions.isGranted(permission);
-    }
-
-    public static boolean isGranted(RxPermissions rxPermissions, String... permissions) {
-        for (var permission : permissions) {
-            if (!isGranted(rxPermissions, permission)) {
-                return false;
-            }
-        }
-        return true;
     }
     //</editor-fold>
 }

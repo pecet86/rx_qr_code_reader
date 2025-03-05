@@ -25,6 +25,9 @@ import pl.pecet.rx_code_reader.qr.internal.support.OrientationUtils;
 @Getter
 public class QrCodeConfig {
 
+    public static final int FLASH_MODE_AUTO = androidx.camera.core.ImageCapture.FLASH_MODE_AUTO;
+    public static final int FLASH_MODE_ON = androidx.camera.core.ImageCapture.FLASH_MODE_ON;
+    public static final int FLASH_MODE_OFF = androidx.camera.core.ImageCapture.FLASH_MODE_OFF;
     @NonNull
     private final Activity activity;
     private int flashMode = FLASH_MODE_AUTO;
@@ -47,10 +50,6 @@ public class QrCodeConfig {
             OrientationUtils.unlockOrientation(activity);
         }
     }
-
-    public static final int FLASH_MODE_AUTO = androidx.camera.core.ImageCapture.FLASH_MODE_AUTO;
-    public static final int FLASH_MODE_ON = androidx.camera.core.ImageCapture.FLASH_MODE_ON;
-    public static final int FLASH_MODE_OFF = androidx.camera.core.ImageCapture.FLASH_MODE_OFF;
 
     @IntDef({FLASH_MODE_AUTO, FLASH_MODE_ON, FLASH_MODE_OFF})
     @Retention(SOURCE)

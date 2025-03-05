@@ -45,14 +45,6 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
                 .build();
     }
 
-    @Override
-    public void analyze(@NonNull ImageProxy imageProxy) {
-        var image = imageProxy.getImage();
-        if (image != null) {
-            new Analyzer(imageProxy, image).analyze();
-        }
-    }
-
     private static ByteBuffer imageToByteBuffer(final Image image) {
         final var crop = image.getCropRect();
         final var width = crop.width();
@@ -151,6 +143,14 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
         var matrix = new Matrix();
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
+    }
+
+    @Override
+    public void analyze(@NonNull ImageProxy imageProxy) {
+        var image = imageProxy.getImage();
+        if (image != null) {
+            new Analyzer(imageProxy, image).analyze();
+        }
     }
 
     private class Analyzer {

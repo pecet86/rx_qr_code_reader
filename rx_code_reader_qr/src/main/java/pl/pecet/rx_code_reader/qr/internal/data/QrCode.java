@@ -255,6 +255,31 @@ public class QrCode {
         @Getter
         private final Barcode.CalendarEvent qrCode;
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private static LocalDateTime localDateTimeFrom(Barcode.CalendarDateTime value) {
+            return value == null
+                    ? null
+                    : LocalDateTime.of(value.getYear(), value.getMonth(), value.getDay(),
+                    value.getHours(), value.getMinutes(), value.getSeconds());
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private static Date localDateTimeToDate(LocalDateTime date) {
+            return date == null
+                    ? null
+                    : new Date(date.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli());
+        }
+
+        private static Date dateFrom(Barcode.CalendarDateTime value) {
+            if (value == null) {
+                return null;
+            } else {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(value.getYear(), value.getMonth(), value.getDay(), value.getHours(), value.getMinutes(), value.getSeconds());
+                return calendar.getTime();
+            }
+        }
+
         //<editor-fold desc="delegate">
         public String getSummary() {
             return qrCode.getSummary();
@@ -280,6 +305,7 @@ public class QrCode {
         public LocalDateTime getStartLocalDateTime() {
             return localDateTimeFrom(qrCode.getStart());
         }
+        //</editor-fold>
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public LocalDateTime getEndLocalDateTime() {
@@ -299,32 +325,6 @@ public class QrCode {
                 return localDateTimeToDate(getEndLocalDateTime());
             } else {
                 return dateFrom(qrCode.getEnd());
-            }
-        }
-        //</editor-fold>
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        private static LocalDateTime localDateTimeFrom(Barcode.CalendarDateTime value) {
-            return value == null
-                    ? null
-                    : LocalDateTime.of(value.getYear(), value.getMonth(), value.getDay(),
-                    value.getHours(), value.getMinutes(), value.getSeconds());
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        private static Date localDateTimeToDate(LocalDateTime date) {
-            return date == null
-                    ? null
-                    : new Date(date.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli());
-        }
-
-        private static Date dateFrom(Barcode.CalendarDateTime value) {
-            if (value == null) {
-                return null;
-            } else {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(value.getYear(), value.getMonth(), value.getDay(), value.getHours(), value.getMinutes(), value.getSeconds());
-                return calendar.getTime();
             }
         }
     }

@@ -1,66 +1,68 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
 
 apply from: "$rootDir/gradle/dependencies.gradle"
 apply from: "$rootDir/gradle/configuration.gradle"
 
 android {
-    namespace "${config.namespace}.example"
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+  namespace "${config.namespace}.example"
+  compileSdkVersion config.compileSdkVersion
+  buildToolsVersion config.buildToolsVersion
 
-    defaultConfig {
-        minSdkVersion config.minSdkVersion
-        targetSdkVersion config.targetSdkVersion
+  defaultConfig {
+    minSdkVersion config.minSdkVersion
+    targetSdkVersion config.targetSdkVersion
+    applicationId "${config.namespace}.example"
+  }
+
+  buildTypes {
+    debug {
+
     }
-
-    buildTypes {
-        debug {
-
-        }
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    release {
+      minifyEnabled true
+      shrinkResources true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    compileOptions {
-        sourceCompatibility = config.sourceCompatibility
-        targetCompatibility = config.targetCompatibility
-    }
+  compileOptions {
+    sourceCompatibility = config.sourceCompatibility
+    targetCompatibility = config.targetCompatibility
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+  implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation project(':rx_code_reader_qr')
-    implementation project(':rx_code_reader_ean')
+  implementation project(':rx_code_reader_qr')
+  implementation project(':rx_code_reader_ean')
 
-    implementation "androidx.camera:camera-core:${deps.camerax}"
+  implementation "androidx.camera:camera-core:${deps.camerax}"
 
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${deps.kotlin_stdlib}") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${deps.kotlin_stdlib}") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
+  constraints {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${deps.kotlin_stdlib}") {
+      because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
     }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${deps.kotlin_stdlib}") {
+      because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+    }
+  }
 
-    implementation "androidx.appcompat:appcompat:${deps.appcompat}"
-    implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
-    implementation "com.google.android.material:material:${deps.material}"
+  implementation "androidx.appcompat:appcompat:${deps.appcompat}"
+  implementation "androidx.constraintlayout:constraintlayout:${deps.constraintlayout}"
+  implementation "com.google.android.material:material:${deps.material}"
 
-    //RxJava
-    implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
-    implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
+  //RxJava
+  implementation "io.reactivex.rxjava3:rxjava:${deps.rxjava3}"
+  implementation "io.reactivex.rxjava3:rxandroid:${deps.rxandroid3}"
 
-    //autodispose
-    implementation "com.uber.autodispose2:autodispose:${deps.autodispose}"
-    implementation "com.uber.autodispose2:autodispose-lifecycle:${deps.autodispose}"
-    implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:${deps.autodispose}"
-    implementation "com.uber.autodispose2:autodispose-android:${deps.autodispose}"
-    implementation "com.uber.autodispose2:autodispose-error-prone:${deps.autodispose}"
-    implementation "com.uber.autodispose2:autodispose-interop-coroutines:${deps.autodispose}"
+  //autodispose
+  implementation "com.uber.autodispose2:autodispose:${deps.autodispose}"
+  implementation "com.uber.autodispose2:autodispose-lifecycle:${deps.autodispose}"
+  implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:${deps.autodispose}"
+  implementation "com.uber.autodispose2:autodispose-android:${deps.autodispose}"
+  implementation "com.uber.autodispose2:autodispose-error-prone:${deps.autodispose}"
+  implementation "com.uber.autodispose2:autodispose-interop-coroutines:${deps.autodispose}"
 
 }
